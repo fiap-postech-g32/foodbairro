@@ -1,9 +1,9 @@
-const express = require('express');
+import fastify from 'fastify';
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
-const app = express();
+const app = fastify();
 
 app.get('/', (request, response) => {
     response.send(`
@@ -16,4 +16,9 @@ app.get('/', (request, response) => {
     `);
 });
 
-app.listen(PORT, HOST);
+app.listen({
+    host: '0.0.0.0',
+    port: process.env.PORT ? Number(process.env.PORT) : 3333
+}).then(() => {
+    console.log('HTTP Server running.');
+});
