@@ -25,11 +25,22 @@ Sistema para Lanchonete - Tech Challenge - Pós Tech FIAP.
   - prisma ou typeORM >> ORM
   - nodemon (dev) >> hot reload
   - dotenv (dev) >> variáveis de ambiente
+- Documentação da arquitetura
 - Testes
 - CRUD de usuário
 - Criar um arquivo padrão de extensões do VS Code
 
 ## Instalação
+
+- Instalar Node (https://nodejs.org/en/download)
+- Instalar o banco de dados: `docker pull postgres`
+- Rodar o banco de dados: `docker run -p 5432:5432 -e POSTGRES_PASSWORD=1234 postgres`
+- Clonar o projeto no GitHub: `git clone https://github.com/Grupo-PosTech-FIAP/lanchonete-back.git`
+- Mudar branch: `git checkout develop`
+- Instalar dependências: `npm install`
+- Executar o projeto: `npm start` ou `npm run dev`
+
+### Ambiente Docker
 
 - Instalar o Docker na máquina. 👉 [docker.com](https://www.docker.com/products/docker-desktop/)
 - Buildar a imagem do projeto via linha de comando:
