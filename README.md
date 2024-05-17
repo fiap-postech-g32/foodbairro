@@ -40,6 +40,33 @@ Sistema para Lanchonete - Tech Challenge - Pós Tech FIAP.
 - Instalar dependências: `npm install`
 - Executar o projeto: `npm start` ou `npm run dev`
 
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+
 ### Ambiente Docker
 
 - Instalar o Docker na máquina. 👉 [docker.com](https://www.docker.com/products/docker-desktop/)
@@ -69,4 +96,8 @@ docker-compose up --build
 ```
 docker-compose down
 ```
+
+## Recomendações
+
+Importante desinstalar a extensão Prettier — Code Formatter no seu VSCode, pois o projeto possui sua própria configuração de formatação de código. A extensão pode causar incompatibilidades com as configurações existentes.
 
