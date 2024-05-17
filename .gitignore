@@ -131,3 +131,6 @@ dist
 
 # Local history
 .history/*
+
+# Database SQLite
+*.db
