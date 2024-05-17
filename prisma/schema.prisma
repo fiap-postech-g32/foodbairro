@@ -17,3 +17,10 @@ model Usuario {
   email String
   cpf String
 }
+
+model Pedido {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  numero String
+  status Int
+}
