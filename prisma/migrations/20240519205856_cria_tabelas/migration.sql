@@ -1,0 +1,38 @@
+-- CreateTable
+CREATE TABLE "Usuario" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "nome" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "cpf" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Produto" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "nome" TEXT NOT NULL,
+    "descricao" TEXT NOT NULL,
+    "categoria" TEXT NOT NULL,
+    "preco" DECIMAL NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Pedido" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "numero" INTEGER NOT NULL,
+    "status" TEXT NOT NULL,
+    "statusPagamento" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "PedidoItem" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "idPedido" INTEGER NOT NULL,
+    "idProduto" INTEGER NOT NULL,
+    "preco" DECIMAL NOT NULL,
+    CONSTRAINT "PedidoItem_idPedido_fkey" FOREIGN KEY ("idPedido") REFERENCES "Pedido" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "PedidoItem_idProduto_fkey" FOREIGN KEY ("idProduto") REFERENCES "Produto" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

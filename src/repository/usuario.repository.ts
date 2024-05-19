@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common/decorators";
-import { randomUUID } from "node:crypto";
 import { PrismaService } from "src/database/prisma.service";
 import { BaseRepository } from "./base.repository";
 
@@ -23,7 +22,6 @@ export class UsuarioRepository implements BaseRepository {
     async criar({ nome, cpf, email }): Promise<void> {
         await this.prisma.usuario.create({
             data: {
-                id: randomUUID(),
                 nome,
                 cpf,
                 email

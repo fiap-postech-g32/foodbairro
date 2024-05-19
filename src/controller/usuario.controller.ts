@@ -1,10 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common/decorators";
-import { UsuarioService } from "../service/usuario.service";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+} from '@nestjs/common/decorators';
+import { ApiTags } from '@nestjs/swagger';
+import { UsuarioService } from '../service/usuario.service';
 
+@ApiTags('Usuario')
 @Controller('usuario')
 export class UsuarioController {
-
-    constructor(private readonly service: UsuarioService) { }
+    constructor(private readonly service: UsuarioService) {}
 
     @Get()
     obter() {
@@ -15,7 +24,7 @@ export class UsuarioController {
     obterPorCpf(@Param('cpf') cpf: string) {
         return this.service.obterPorCpf(cpf);
     }
-    
+
     @Post()
     criar(@Body() usuario: any) {
         return this.service.criar(usuario);
@@ -30,5 +39,4 @@ export class UsuarioController {
     excluir(@Param('id') id: string) {
         return this.service.excluir(id);
     }
-
 }
