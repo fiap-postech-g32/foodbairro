@@ -111,6 +111,25 @@ npx prisma studio
 npx prisma migrate reset
 ```
 
+#### Para Limpeza do cache total do base:
+- Remover tudo da linha 13 para baixo do arquivo schema.prisma
+- Rodar todos os comandos abaixo:
+
+```
+prisma format
+npx prisma generate
+npx prisma migrate dev
+```
+
+- Voltar todas as linhas removidas e executar os mesmos comandos
+
+```
+prisma format
+npx prisma generate
+npx prisma migrate dev
+```
+
+
 ## Recomendações
 
 Importante desinstalar a extensão Prettier — Code Formatter no seu VSCode, pois o projeto possui sua própria configuração de formatação de código. A extensão pode causar incompatibilidades com as configurações existentes.
