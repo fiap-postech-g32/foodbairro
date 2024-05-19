@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { PedidoRepository } from 'src/repository/pedido.repository';
-import { statusPedido } from 'src/util/enum/statusPedido';
+import { StatusPedido } from 'src/util/enum/StatusPedido';
 
 @Injectable()
 export class PedidoService {
-    constructor(private repository: PedidoRepository) {}
+    constructor(private repository: PedidoRepository) { }
 
     async obter() {
         return await this.repository.obter();
@@ -12,8 +12,8 @@ export class PedidoService {
 
     async obterEmAndamento() {
         var status = new Array(2);
-        status.push(statusPedido.recebido);
-        status.push(statusPedido.emPreparacao);
+        status.push(StatusPedido.RECEBIDO);
+        status.push(StatusPedido.EM_PREPARACAO);
 
         return await this.repository.obterPorStatus({ status: status });
     }

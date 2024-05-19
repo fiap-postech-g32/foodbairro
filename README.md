@@ -97,6 +97,20 @@ docker-compose up --build
 docker-compose down
 ```
 
+## Prisma
+
+- Acessar banco de dados do navegador:
+
+```
+npx prisma studio
+```
+
+- Deleta todas as tabela:
+
+```
+npx prisma migrate reset
+```
+
 ## Recomendações
 
 Importante desinstalar a extensão Prettier — Code Formatter no seu VSCode, pois o projeto possui sua própria configuração de formatação de código. A extensão pode causar incompatibilidades com as configurações existentes.

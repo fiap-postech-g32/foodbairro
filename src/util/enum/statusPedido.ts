@@ -1,6 +1,6 @@
-export enum statusPedido {
-    recebido = 1,
-    emPreparacao = 2,
-    pronto = 3,
-    finalizado = 4,
-}
+export enum StatusPedido {
+    RECEBIDO = "Recebido",
+    EM_PREPARACAO = "Em preparação",
+    PRONTO = "Pronto",
+    FINALIZADO = "Finalizado"
+};

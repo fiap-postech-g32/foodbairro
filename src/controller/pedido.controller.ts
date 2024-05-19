@@ -13,19 +13,19 @@ import { PedidoService } from '../service/pedido.service';
 @ApiTags('Pedido')
 @Controller('pedido')
 export class PedidoController {
-    constructor(private readonly service: PedidoService) {}
+    constructor(private readonly service: PedidoService) { }
 
     @Get('')
     obter() {
         return this.service.obter();
     }
 
-    @Get('')
+    @Get(':numero')
     obterPorNumero(@Param('numero') numero: string) {
         return this.service.obterPorNumero(numero);
     }
 
-    @Post()
+    @Post('')
     criar(@Body() pedido: any) {
         return this.service.criar(pedido);
     }

@@ -11,16 +11,38 @@ datasource db {
 }
 
 model Usuario {
-  id String @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  nome String
-  email String
-  cpf String
+  nome      String
+  email     String
+  cpf       String
+}
+
+model Produto {
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  nome       String
+  descricao  String
+  categoria  String
+  preco      Decimal
+  PedidoItem PedidoItem[]
 }
 
 model Pedido {
-  id String @id @default(cuid())
+  id              Int          @id @default(autoincrement())
+  createdAt       DateTime     @default(now())
+  numero          Int
+  status          String
+  statusPagamento String
+  PedidoItem      PedidoItem[]
+}
+
+model PedidoItem {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  numero String
-  status Int
+  pedido    Pedido   @relation(fields: [idPedido], references: [id])
+  idPedido  Int
+  produto   Produto  @relation(fields: [idProduto], references: [id])
+  idProduto Int
+  preco     Decimal
 }
