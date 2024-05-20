@@ -4,13 +4,21 @@ import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class ProdutoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService) {}
 
     async obter() {
         return await this.prisma.produto.findMany();
     }
 
-    async obterPorCategoria({ categoria }) {
+    async obterPorId(id) {
+        return await this.prisma.produto.findUnique({
+            where: {
+                id: id,
+            },
+        });
+    }
+
+    async obterPorCategoria(categoria) {
         return await this.prisma.produto.findMany({
             where: {
                 categoria: categoria,
@@ -24,7 +32,7 @@ export class ProdutoRepository implements BaseRepository {
                 nome,
                 descricao,
                 categoria,
-                preco
+                preco,
             },
         });
     }
@@ -35,7 +43,7 @@ export class ProdutoRepository implements BaseRepository {
                 nome,
                 descricao,
                 categoria,
-                preco
+                preco,
             },
             where: {
                 id,
@@ -43,7 +51,7 @@ export class ProdutoRepository implements BaseRepository {
         });
     }
 
-    async excluir({ id }) {
+    async excluir(id) {
         return await this.prisma.produto.delete({
             where: {
                 id,

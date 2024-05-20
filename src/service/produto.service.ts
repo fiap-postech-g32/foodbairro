@@ -1,27 +1,51 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { ProdutoRepository } from 'src/repository/produto.repository';
+import { categoria } from './../util/enum/categoria';
 
 @Injectable()
 export class ProdutoService {
-    constructor(private repository: ProdutoRepository) { }
+    constructor(private repository: ProdutoRepository) {}
 
     async obter() {
         return await this.repository.obter();
     }
 
-    async obterPorCategoria(categoria: string) {
-        return await this.repository.obterPorCategoria({ categoria });
+    async obterPorCategoria(categoria) {
+        return await this.repository.obterPorCategoria(categoria);
     }
 
     async criar(produto: any) {
-        return await this.repository.criar(produto);
+        try {
+            const teste = this.convertStrToEnum(produto.categoria);
+            if (teste == '')
+                throw new Error('Categoria informada não é permitida!');
+
+            return await this.repository.criar(produto);
+        } catch (error) {
+            return error;
+        }
     }
 
     async alterar(produto: any) {
         return await this.repository.alterar(produto);
     }
 
-    async excluir(id: string) {
-        return await this.repository.excluir({ id });
+    async excluir(id: number) {
+        id = Number(id);
+        return this.repository.excluir(id);
+    }
+
+    verificaCategoria(categoria: string): categoria is categoria {
+        return Object.values<string>(categoria).includes(categoria);
+    }
+
+    convertStrToEnum<T extends keyof typeof categoria>(
+        convertingStr: string,
+    ): categoria | string {
+        if (Object.values(categoria).includes(convertingStr as categoria)) {
+            return convertingStr as categoria;
+        } else {
+            return '';
+        }
     }
 }

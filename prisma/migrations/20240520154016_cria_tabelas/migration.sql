@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Usuario" (
+CREATE TABLE "Cliente" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "nome" TEXT NOT NULL,
@@ -27,12 +27,12 @@ CREATE TABLE "Pedido" (
 );
 
 -- CreateTable
-CREATE TABLE "PedidoItem" (
+CREATE TABLE "PedidoProduto" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "idPedido" INTEGER NOT NULL,
     "idProduto" INTEGER NOT NULL,
     "preco" DECIMAL NOT NULL,
-    CONSTRAINT "PedidoItem_idPedido_fkey" FOREIGN KEY ("idPedido") REFERENCES "Pedido" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "PedidoItem_idProduto_fkey" FOREIGN KEY ("idProduto") REFERENCES "Produto" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "PedidoProduto_idPedido_fkey" FOREIGN KEY ("idPedido") REFERENCES "Pedido" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "PedidoProduto_idProduto_fkey" FOREIGN KEY ("idProduto") REFERENCES "Produto" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
