@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { PedidoRepository } from 'src/repository/pedido.repository';
-import { StatusPedido } from 'src/util/enum/StatusPedido';
 import { StatusPagamento } from 'src/util/enum/statusPagamento';
+import { StatusPedido } from 'src/util/enum/statusPedido';
 import { ProdutoRepository } from './../repository/produto.repository';
 
 @Injectable()

@@ -1,12 +1,13 @@
-FROM node:alpine
+FROM node:latest
 
 WORKDIR /usr/app
 
-COPY package*.json ./
-RUN npm install
+COPY . .
+
+RUN npm install --quiet --no-optional --no-fund --loglevel=error
+RUN npm run build
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE ${PORT}
 
-CMD [ "npm", "start" ]
