@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { checkout } from 'src/domain/checkout';
+import { retorno } from 'src/domain/retorno';
 import { PedidoService } from '../service/pedido.service';
 
 @ApiTags('Pedido')
@@ -20,8 +21,18 @@ export class PedidoController {
     @ApiOperation({
         description: 'Método utilizado para obter todos os pedidos',
     })
-    obter() {
-        return this.service.obter();
+    async obter() {
+        const result = new retorno();
+
+        try {
+            const produtos = await this.service.obter();
+            result.data = produtos;
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Get('/obterEmAndamento')
@@ -29,8 +40,18 @@ export class PedidoController {
         description:
             'Método utilizado para obter todos os pedidos em andamento',
     })
-    obterEmAndamento() {
-        return this.service.obterEmAndamento();
+    async obterEmAndamento() {
+        const result = new retorno();
+
+        try {
+            const produtos = await this.service.obterEmAndamento();
+            result.data = produtos;
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Get(':numero')
@@ -38,31 +59,71 @@ export class PedidoController {
         description:
             'Método utilizado para obter um determinado pedido pelo número',
     })
-    obterPorNumero(@Param('numero') numero: string) {
-        return this.service.obterPorNumero(numero);
+    async obterPorNumero(@Param('numero') numero: string) {
+        const result = new retorno();
+
+        try {
+            const produtos = await this.service.obterPorNumero(numero);
+            result.data = produtos;
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Post('/checkout')
     @ApiOperation({
         description: 'Método utilizado para enviar o checkout do pedido',
     })
-    criar(@Body() pedido: checkout[]) {
-        return this.service.criar(pedido);
+    async criar(@Body() pedido: checkout[]) {
+        const result = new retorno();
+
+        try {
+            await this.service.criar(pedido);
+            result.mensagem = 'Pedido incluído com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Put()
     @ApiOperation({
         description: 'Método utilizado para atualizar um determinado pedido',
     })
-    alterar(@Body() pedido: any) {
-        return this.service.alterar(pedido);
+    async alterar(@Body() pedido: any) {
+        const result = new retorno();
+
+        try {
+            await this.service.alterar(pedido);
+            result.mensagem = 'Pedido alterado com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Delete(':id')
     @ApiOperation({
         description: 'Método utilizado para excluir um determinado pedido',
     })
-    excluir(@Param('id') id: number) {
-        return this.service.excluir(id);
+    async excluir(@Param('id') id: number) {
+        const result = new retorno();
+
+        try {
+            await this.service.excluir(id);
+            result.mensagem = 'Pedido excluído com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 }
