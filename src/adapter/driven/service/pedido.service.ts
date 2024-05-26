@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { PedidoRepository } from 'src/repository/pedido.repository';
-import { StatusPagamento } from 'src/util/enum/statusPagamento';
-import { StatusPedido } from 'src/util/enum/statusPedido';
-import { ProdutoRepository } from './../repository/produto.repository';
+import { StatusPagamento } from 'src/core/enum/statusPagamento';
+import { StatusPedido } from 'src/core/enum/statusPedido';
+import { PedidoRepository } from '../repository/pedido.repository';
+import { ProdutoRepository } from '../repository/produto.repository';
 
 @Injectable()
 export class PedidoService {
