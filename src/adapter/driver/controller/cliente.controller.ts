@@ -8,10 +8,10 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { cliente } from 'src/domain/cliente';
-import { insereCliente } from 'src/domain/insereCliente';
-import { retorno } from 'src/domain/retorno';
-import { ClienteService } from '../service/cliente.service';
+import { ClienteService } from 'src/adapter/driven/service/cliente.service';
+import { Cliente } from 'src/core/domain/cliente';
+import { InsereCliente } from 'src/core/domain/insereCliente';
+import { Retorno } from 'src/core/domain/retorno';
 
 @ApiTags('Cliente')
 @Controller('cliente')
@@ -23,7 +23,7 @@ export class ClienteController {
         description: 'Método utilizado para obter todos os clientes',
     })
     async obter() {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obter();
@@ -42,7 +42,7 @@ export class ClienteController {
             'Método utilizado para obter um determinado cliente pelo CPF',
     })
     async obterPorCpf(@Param('cpf') cpf: string) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obterPorCpf(cpf);
@@ -59,8 +59,8 @@ export class ClienteController {
     @ApiOperation({
         description: 'Método utilizado para inserir um novo cliente',
     })
-    async criar(@Body() cliente: insereCliente) {
-        const result = new retorno();
+    async criar(@Body() cliente: InsereCliente) {
+        const result = new Retorno();
 
         try {
             await this.service.criar(cliente);
@@ -77,8 +77,8 @@ export class ClienteController {
     @ApiOperation({
         description: 'Método utilizado para atualizar um determinado cliente',
     })
-    async alterar(@Body() cliente: cliente) {
-        const result = new retorno();
+    async alterar(@Body() cliente: Cliente) {
+        const result = new Retorno();
 
         try {
             await this.service.alterar(cliente);
@@ -96,7 +96,7 @@ export class ClienteController {
         description: 'Método utilizado para excluir um determinado cliente',
     })
     async excluir(@Param('id') id: string) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             await this.service.excluir(id);

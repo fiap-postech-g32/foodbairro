@@ -8,9 +8,9 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { checkout } from 'src/domain/checkout';
-import { retorno } from 'src/domain/retorno';
-import { PedidoService } from '../service/pedido.service';
+import { PedidoService } from 'src/adapter/driven/service/pedido.service';
+import { Checkout } from 'src/core/domain/checkout';
+import { Retorno } from 'src/core/domain/retorno';
 
 @ApiTags('Pedido')
 @Controller('pedido')
@@ -22,7 +22,7 @@ export class PedidoController {
         description: 'Método utilizado para obter todos os pedidos',
     })
     async obter() {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obter();
@@ -41,7 +41,7 @@ export class PedidoController {
             'Método utilizado para obter todos os pedidos em andamento',
     })
     async obterEmAndamento() {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obterEmAndamento();
@@ -60,7 +60,7 @@ export class PedidoController {
             'Método utilizado para obter um determinado pedido pelo número',
     })
     async obterPorNumero(@Param('numero') numero: string) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obterPorNumero(numero);
@@ -77,8 +77,8 @@ export class PedidoController {
     @ApiOperation({
         description: 'Método utilizado para enviar o checkout do pedido',
     })
-    async criar(@Body() pedido: checkout[]) {
-        const result = new retorno();
+    async criar(@Body() pedido: Checkout[]) {
+        const result = new Retorno();
 
         try {
             await this.service.criar(pedido);
@@ -96,7 +96,7 @@ export class PedidoController {
         description: 'Método utilizado para atualizar um determinado pedido',
     })
     async alterar(@Body() pedido: any) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             await this.service.alterar(pedido);
@@ -114,7 +114,7 @@ export class PedidoController {
         description: 'Método utilizado para excluir um determinado pedido',
     })
     async excluir(@Param('id') id: number) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             await this.service.excluir(id);

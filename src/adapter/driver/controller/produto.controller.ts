@@ -8,11 +8,11 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { insereProduto } from 'src/domain/insereProduto';
-import { produto } from 'src/domain/produto';
-import { retorno } from 'src/domain/retorno';
-import { categoria } from 'src/util/enum/categoria';
-import { ProdutoService } from '../service/produto.service';
+import { ProdutoService } from 'src/adapter/driven/service/produto.service';
+import { InsereProduto } from 'src/core/domain/insereProduto';
+import { Produto } from 'src/core/domain/produto';
+import { Retorno } from 'src/core/domain/retorno';
+import { Categoria } from 'src/core/enum/categoria';
 
 @ApiTags('Produto')
 @Controller('produto')
@@ -24,7 +24,7 @@ export class ProdutoController {
         description: 'Método utilizado para obter todos os produtos',
     })
     async obter() {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obter();
@@ -42,9 +42,9 @@ export class ProdutoController {
         description:
             'Método utilizado para obter todos os produtos por uma determinada categoria',
     })
-    @ApiParam({ name: 'categoria', enum: categoria })
-    async obterPorCategoria(@Param('categoria') categoria: categoria) {
-        const result = new retorno();
+    @ApiParam({ name: 'categoria', enum: Categoria })
+    async obterPorCategoria(@Param('categoria') categoria: Categoria) {
+        const result = new Retorno();
 
         try {
             const produtos = await this.service.obterPorCategoria(categoria);
@@ -61,8 +61,8 @@ export class ProdutoController {
     @ApiOperation({
         description: 'Método utilizado para inserir um novo produto',
     })
-    async criar(@Body() produto: insereProduto) {
-        const result = new retorno();
+    async criar(@Body() produto: InsereProduto) {
+        const result = new Retorno();
 
         try {
             await this.service.criar(produto);
@@ -79,8 +79,8 @@ export class ProdutoController {
     @ApiOperation({
         description: 'Método utilizado para atualizar um determinado produto',
     })
-    async alterar(@Body() produto: produto) {
-        const result = new retorno();
+    async alterar(@Body() produto: Produto) {
+        const result = new Retorno();
 
         try {
             await this.service.alterar(produto);
@@ -98,7 +98,7 @@ export class ProdutoController {
         description: 'Método utilizado para excluir um determinado produto',
     })
     async excluir(@Param('id') id: number) {
-        const result = new retorno();
+        const result = new Retorno();
 
         try {
             await this.service.excluir(id);

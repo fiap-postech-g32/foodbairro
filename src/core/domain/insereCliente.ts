@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class insereCliente {
+export class InsereCliente {
     @ApiProperty({ example: 'cliente' })
     nome: string;
 
