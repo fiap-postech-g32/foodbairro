@@ -8,10 +8,11 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { insereProduto } from 'src/core/domain/insereProduto';
-import { produto } from 'src/core/domain/produto';
-import { categoria } from '../../../core/enum/categoria';
-import { ProdutoService } from '../../driven/service/produto.service';
+import { ProdutoService } from 'src/adapter/driven/service/produto.service';
+import { InsereProduto } from 'src/core/domain/insereProduto';
+import { Produto } from 'src/core/domain/produto';
+import { Retorno } from 'src/core/domain/retorno';
+import { Categoria } from 'src/core/enum/categoria';
 
 @ApiTags('Produto')
 @Controller('produto')
@@ -22,8 +23,18 @@ export class ProdutoController {
     @ApiOperation({
         description: 'Método utilizado para obter todos os produtos',
     })
-    obter() {
-        return this.service.obter();
+    async obter() {
+        const result = new Retorno();
+
+        try {
+            const produtos = await this.service.obter();
+            result.data = produtos;
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Get(':categoria')
@@ -31,32 +42,72 @@ export class ProdutoController {
         description:
             'Método utilizado para obter todos os produtos por uma determinada categoria',
     })
-    @ApiParam({ name: 'categoria', enum: categoria })
-    obterPorCategoria(@Param('categoria') categoria: categoria) {
-        return this.service.obterPorCategoria(categoria);
+    @ApiParam({ name: 'categoria', enum: Categoria })
+    async obterPorCategoria(@Param('categoria') categoria: Categoria) {
+        const result = new Retorno();
+
+        try {
+            const produtos = await this.service.obterPorCategoria(categoria);
+            result.data = produtos;
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Post('')
     @ApiOperation({
         description: 'Método utilizado para inserir um novo produto',
     })
-    criar(@Body() produto: insereProduto) {
-        return this.service.criar(produto);
+    async criar(@Body() produto: InsereProduto) {
+        const result = new Retorno();
+
+        try {
+            await this.service.criar(produto);
+            result.mensagem = 'Produto incluído com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Put()
     @ApiOperation({
         description: 'Método utilizado para atualizar um determinado produto',
     })
-    alterar(@Body() produto: produto) {
-        return this.service.alterar(produto);
+    async alterar(@Body() produto: Produto) {
+        const result = new Retorno();
+
+        try {
+            await this.service.alterar(produto);
+            result.mensagem = 'Produto alterado com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 
     @Delete(':id')
     @ApiOperation({
         description: 'Método utilizado para excluir um determinado produto',
     })
-    excluir(@Param('id') id: number) {
-        return this.service.excluir(id);
+    async excluir(@Param('id') id: number) {
+        const result = new Retorno();
+
+        try {
+            await this.service.excluir(id);
+            result.mensagem = 'Produto excluído com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+
+        return result;
     }
 }
