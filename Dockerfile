@@ -1,12 +1,12 @@
-FROM node:alpine
+FROM node:latest
 
 WORKDIR /usr/app
 
-COPY package*.json ./
-RUN npm install
-
 COPY . .
 
-EXPOSE 3000
+RUN npm install --quiet --no-optional --no-fund --loglevel=error
+RUN npm run build
+RUN npx prisma migrate deploy
 
-CMD [ "npm", "start" ]
+EXPOSE ${PORT}
+

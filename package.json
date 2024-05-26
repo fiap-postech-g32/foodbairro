@@ -1,7 +1,7 @@
 {
     "name": "foodbairro",
-    "description": "The API for FoodBairro App.",
-    "version": "0.0.1",
+    "description": "The API for FoodBairro app.",
+    "version": "0.0.2",
     "author": "",
     "private": true,
     "license": "ISC",
