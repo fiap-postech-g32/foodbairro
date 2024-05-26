@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { categoria } from '../../../core/enum/categoria';
+import { Categoria } from '../../../core/enum/categoria';
 import { ProdutoRepository } from '../repository/produto.repository';
 
 @Injectable()
@@ -35,15 +35,15 @@ export class ProdutoService {
         return this.repository.excluir(id);
     }
 
-    verificaCategoria(categoria: string): categoria is categoria {
+    verificaCategoria(categoria: string): categoria is Categoria {
         return Object.values<string>(categoria).includes(categoria);
     }
 
-    convertStrToEnum<T extends keyof typeof categoria>(
+    convertStrToEnum<T extends keyof typeof Categoria>(
         convertingStr: string,
-    ): categoria | string {
-        if (Object.values(categoria).includes(convertingStr as categoria)) {
-            return convertingStr as categoria;
+    ): Categoria | string {
+        if (Object.values(Categoria).includes(convertingStr as Categoria)) {
+            return convertingStr as Categoria;
         } else {
             return '';
         }

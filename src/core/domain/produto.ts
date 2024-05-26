@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Decimal } from '@prisma/client/runtime/library';
-import { categoria } from '../enum/categoria';
+import { Categoria } from '../enum/categoria';
 
-export class produto {
+export class Produto {
     @ApiProperty({ example: 1 })
     id: number;
 
@@ -13,7 +13,7 @@ export class produto {
     descricao: string;
 
     @ApiProperty({ example: 'Lanche' })
-    categoria: categoria;
+    categoria: Categoria;
 
     @ApiProperty({ example: '19.99' })
     preco: Decimal;
