@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { ProdutoRepository } from 'src/repository/produto.repository';
-import { categoria } from './../util/enum/categoria';
+import { categoria } from '../../../core/enum/categoria';
+import { ProdutoRepository } from '../repository/produto.repository';
 
 @Injectable()
 export class ProdutoService {

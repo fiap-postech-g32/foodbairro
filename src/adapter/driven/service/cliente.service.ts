@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { ClienteRepository } from 'src/repository/cliente.repository';
+import { ClienteRepository } from '../repository/cliente.repository';
 
 @Injectable()
 export class ClienteService {

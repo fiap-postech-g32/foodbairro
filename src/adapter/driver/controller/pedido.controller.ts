@@ -8,8 +8,8 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { checkout } from 'src/domain/checkout';
-import { PedidoService } from '../service/pedido.service';
+import { checkout } from 'src/core/domain/checkout';
+import { PedidoService } from '../../driven/service/pedido.service';
 
 @ApiTags('Pedido')
 @Controller('pedido')

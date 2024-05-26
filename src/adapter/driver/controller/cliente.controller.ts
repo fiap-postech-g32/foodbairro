@@ -8,9 +8,9 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { cliente } from 'src/domain/cliente';
-import { insereCliente } from 'src/domain/insereCliente';
-import { ClienteService } from '../service/cliente.service';
+import { cliente } from 'src/core/domain/cliente';
+import { insereCliente } from 'src/core/domain/insereCliente';
+import { ClienteService } from '../../driven/service/cliente.service';
 
 @ApiTags('Cliente')
 @Controller('cliente')

@@ -8,10 +8,10 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { insereProduto } from 'src/domain/insereProduto';
-import { produto } from 'src/domain/produto';
-import { categoria } from 'src/util/enum/categoria';
-import { ProdutoService } from '../service/produto.service';
+import { insereProduto } from 'src/core/domain/insereProduto';
+import { produto } from 'src/core/domain/produto';
+import { categoria } from '../../../core/enum/categoria';
+import { ProdutoService } from '../../driven/service/produto.service';
 
 @ApiTags('Produto')
 @Controller('produto')
