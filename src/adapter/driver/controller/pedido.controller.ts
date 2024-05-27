@@ -7,7 +7,7 @@ import {
     Post,
     Put,
 } from '@nestjs/common/decorators';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PedidoService } from 'src/adapter/driven/service/pedido.service';
 import { Checkout } from 'src/core/domain/checkout';
 import { Retorno } from 'src/core/domain/retorno';
@@ -15,7 +15,7 @@ import { Retorno } from 'src/core/domain/retorno';
 @ApiTags('Pedido')
 @Controller('pedido')
 export class PedidoController {
-    constructor(private readonly service: PedidoService) {}
+    constructor(private readonly service: PedidoService) { }
 
     @Get('')
     @ApiOperation({
@@ -74,6 +74,7 @@ export class PedidoController {
     }
 
     @Post('/checkout')
+    @ApiBody({ type: [Checkout] })
     @ApiOperation({
         description: 'Método utilizado para enviar o checkout do pedido',
     })

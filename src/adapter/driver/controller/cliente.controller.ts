@@ -16,7 +16,7 @@ import { Retorno } from 'src/core/domain/retorno';
 @ApiTags('Cliente')
 @Controller('cliente')
 export class ClienteController {
-    constructor(private readonly service: ClienteService) {}
+    constructor(private readonly service: ClienteService) { }
 
     @Get()
     @ApiOperation({
@@ -95,7 +95,7 @@ export class ClienteController {
     @ApiOperation({
         description: 'Método utilizado para excluir um determinado cliente',
     })
-    async excluir(@Param('id') id: string) {
+    async excluir(@Param('id') id: number) {
         const result = new Retorno();
 
         try {
