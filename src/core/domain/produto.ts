@@ -6,15 +6,15 @@ export class Produto {
     @ApiProperty({ example: 1 })
     id: number;
 
-    @ApiProperty({ example: 'produto' })
+    @ApiProperty({ example: 'X-Salada' })
     nome: string;
 
-    @ApiProperty({ example: 'descrição' })
+    @ApiProperty({ example: 'Hamburguer artesanal de 150g, queijo prato, alface e tomate, servido no pão de brioche' })
     descricao: string;
 
     @ApiProperty({ example: 'Lanche' })
     categoria: Categoria;
 
-    @ApiProperty({ example: '19.99' })
+    @ApiProperty({ example: '25.99' })
     preco: Decimal;
 }

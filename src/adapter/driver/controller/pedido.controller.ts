@@ -10,6 +10,7 @@ import {
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PedidoService } from 'src/adapter/driven/service/pedido.service';
 import { Checkout } from 'src/core/domain/checkout';
+import { Produto } from 'src/core/domain/produto';
 import { Retorno } from 'src/core/domain/retorno';
 import { StatusPedido } from 'src/core/enum/statusPedido';
 
@@ -75,7 +76,7 @@ export class PedidoController {
     }
 
     @Post('/checkout')
-    @ApiBody({ type: [Checkout] })
+    @ApiBody({ type: [ Produto ] })
     @ApiOperation({
         description: 'Método utilizado para enviar o checkout do pedido',
     })
