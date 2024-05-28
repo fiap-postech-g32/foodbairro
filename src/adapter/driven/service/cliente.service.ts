@@ -3,7 +3,7 @@ import { ClienteRepository } from '../repository/cliente.repository';
 
 @Injectable()
 export class ClienteService {
-    constructor(private repository: ClienteRepository) {}
+    constructor(private repository: ClienteRepository) { }
 
     async obter() {
         return await this.repository.obter();
@@ -21,7 +21,8 @@ export class ClienteService {
         return await this.repository.alterar(cliente);
     }
 
-    async excluir(id: string) {
-        return await this.repository.excluir({ id });
+    async excluir(id: number) {
+        id = Number(id);
+        return await this.repository.excluir(id);
     }
 }

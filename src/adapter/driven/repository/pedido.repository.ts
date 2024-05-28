@@ -4,7 +4,7 @@ import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class PedidoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async obter() {
         return await this.prisma.pedido.findMany({
@@ -40,7 +40,7 @@ export class PedidoRepository implements BaseRepository {
                 PedidoProduto: true,
             },
             where: {
-                numero: numero,
+                numero: Number(numero),
             },
         });
     }
@@ -63,6 +63,12 @@ export class PedidoRepository implements BaseRepository {
     }
 
     async excluir(id) {
+        await this.prisma.pedidoProduto.deleteMany({
+            where: {
+                idPedido: id
+            },
+        });
+
         return await this.prisma.pedido.delete({
             where: {
                 id,

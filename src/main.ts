@@ -3,7 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    let logger: any = process?.env?.LOGS;
+    logger = logger ? logger.split(',') : [];
+    const app = await NestFactory.create(AppModule, {
+        logger
+    });
 
     const config = new DocumentBuilder()
         .setTitle('FoodBairro API')
