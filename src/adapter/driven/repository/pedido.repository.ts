@@ -40,7 +40,7 @@ export class PedidoRepository implements BaseRepository {
                 PedidoProduto: true,
             },
             where: {
-                numero: numero,
+                numero: Number(numero),
             },
         });
     }

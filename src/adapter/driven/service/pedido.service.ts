@@ -15,7 +15,7 @@ export class PedidoService {
         return await this.pedidoRepository.obter();
     }
 
-    async obterEmAndamento() {
+    async obterEmPreparacao() {
         var status = [];
         status.push(StatusPedido.RECEBIDO);
         status.push(StatusPedido.EM_PREPARACAO);
@@ -83,8 +83,8 @@ export class PedidoService {
         return await this.pedidoRepository.criar(pedido);
     }
 
-    async alterar(pedido: any) {
-        return await this.pedidoRepository.alterar(pedido);
+    async alterar({id, status}) {
+        return await this.pedidoRepository.alterar({id, status});
     }
 
     async excluir(id: number) {

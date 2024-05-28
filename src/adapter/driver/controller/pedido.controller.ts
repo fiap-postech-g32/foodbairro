@@ -7,10 +7,11 @@ import {
     Post,
     Put,
 } from '@nestjs/common/decorators';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PedidoService } from 'src/adapter/driven/service/pedido.service';
 import { Checkout } from 'src/core/domain/checkout';
 import { Retorno } from 'src/core/domain/retorno';
+import { StatusPedido } from 'src/core/enum/statusPedido';
 
 @ApiTags('Pedido')
 @Controller('pedido')
@@ -35,16 +36,16 @@ export class PedidoController {
         return result;
     }
 
-    @Get('/obterEmAndamento')
+    @Get('/EmPreparacao')
     @ApiOperation({
         description:
-            'Método utilizado para obter todos os pedidos em andamento',
+            'Método utilizado para obter todos os pedidos em preparação',
     })
-    async obterEmAndamento() {
+    async obterEmPreparacao() {
         const result = new Retorno();
 
         try {
-            const produtos = await this.service.obterEmAndamento();
+            const produtos = await this.service.obterEmPreparacao();
             result.data = produtos;
         } catch (error) {
             result.sucesso = false;
@@ -92,21 +93,20 @@ export class PedidoController {
         return result;
     }
 
-    @Put()
+    @Put(':id/status/:status')
     @ApiOperation({
-        description: 'Método utilizado para atualizar um determinado pedido',
+        description: 'Método utilizado para atualizar status do pedido',
     })
-    async alterar(@Body() pedido: any) {
+    @ApiParam({ name: 'status', enum: StatusPedido })
+    async alterar(@Param('id') id: string, @Param('status') status: string) {
         const result = new Retorno();
-
         try {
-            await this.service.alterar(pedido);
+            await this.service.alterar({ id: Number(id), status });
             result.mensagem = 'Pedido alterado com sucesso';
         } catch (error) {
             result.sucesso = false;
             result.mensagem = error;
         }
-
         return result;
     }
 
