@@ -100,4 +100,8 @@ export class PedidoRepository implements BaseRepository {
             },
         });
     }
+
+    async findAll(p0: { where: { status: { $not: string; }; }; }): Promise<any[]> {
+        return await this.prisma.pedido.findMany();
+    }
 }

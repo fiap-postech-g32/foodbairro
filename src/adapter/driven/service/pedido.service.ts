@@ -142,4 +142,28 @@ export class PedidoService {
             total,
         };
     }
+
+    async buscarPedidos(): Promise<any[]> {
+        
+        let pedidos = await this.pedidoRepository.findAll({
+            where: { status: { $not: "Finalizado" } }, 
+        });
+    
+            pedidos.sort((a, b) => {
+            const statusOrder = { "Pronto": 1, "Em Preparação": 2, "Recebido": 3 };
+            return statusOrder[a.status] - statusOrder[b.status] || a.createdAt - b.createdAt;
+        });
+    
+        let pedidosDto = pedidos.map(pedido => ({
+            id: pedido.id,
+            numero: pedido.numero,
+            status: pedido.status,
+            statusPagamento: pedido.statusPagamento,
+            createdAt: pedido.createdAt,
+            tempoEspera: this.verificaTempoEspera(pedido.createdAt.getMinutes()),
+            PedidoProduto: pedido.PedidoProduto,
+        }));
+    
+        return pedidosDto;
+    }
 }
