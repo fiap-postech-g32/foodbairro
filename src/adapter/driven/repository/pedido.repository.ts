@@ -75,4 +75,33 @@ export class PedidoRepository implements BaseRepository {
             },
         });
     }
+
+    async checkoutPedido(id: number): Promise<void> {
+        const pedido = await this.prisma.pedido.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        if (!pedido) {
+            throw new Error('Pedido não encontrado');
+        }
+
+        if (pedido.status !== 'PENDENTE') {
+            throw new Error('O pedido já foi finalizado');
+        }
+
+        await this.prisma.pedido.update({
+            where: {
+                id,
+            },
+            data: {
+                status: 'FINALIZADO',
+            },
+        });
+    }
+
+    async findAll(p0: { where: { status: { $not: string; }; }; }): Promise<any[]> {
+        return await this.prisma.pedido.findMany();
+    }
 }

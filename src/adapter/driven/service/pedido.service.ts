@@ -9,7 +9,7 @@ export class PedidoService {
     constructor(
         private pedidoRepository: PedidoRepository,
         private produtoRepository: ProdutoRepository,
-    ) {}
+    ) { }
 
     async obter() {
         return await this.pedidoRepository.obter();
@@ -44,10 +44,12 @@ export class PedidoService {
         return await this.pedidoRepository.obterPorNumero(numero);
     }
 
-    async criar(produtos: any) {
+
+    async criar(pedido: any): Promise<any> {
+
         const pedidoProdutos = [];
-        for (let i = 0; i < produtos.length; i++) {
-            const produto = produtos[i];
+        for (let i = 0; i < pedido.produtos.length; i++) {
+            const produto = pedido.produtos[i];
             const produtoAux = await this.produtoRepository.obterPorId(
                 produto.id,
             );
@@ -71,7 +73,7 @@ export class PedidoService {
 
         statusPagamentoPedido = this.verificaPagamento();
 
-        const pedido = {
+        const novoPedido = {
             numero: numeroPedido,
             status: statusPedido,
             statusPagamento: statusPagamentoPedido,
@@ -80,11 +82,11 @@ export class PedidoService {
             },
         };
 
-        return await this.pedidoRepository.criar(pedido);
+        return await this.pedidoRepository.criar(novoPedido);
     }
 
-    async alterar({id, status}) {
-        return await this.pedidoRepository.alterar({id, status});
+    async alterar({ id, status }) {
+        return await this.pedidoRepository.alterar({ id, status });
     }
 
     async excluir(id: number) {
@@ -100,5 +102,68 @@ export class PedidoService {
         return dataPedido + 5 - new Date().getMinutes() < 0
             ? 0
             : dataPedido + 5 - new Date().getMinutes();
+    }
+
+    async checkoutPedido(produtos: any[]) {
+
+        const pedidoProdutos = [];
+        let total = 0;
+        for (let produto of produtos) {
+            const produtoEncontrado = await this.produtoRepository.obterPorId(produto.id);
+            if (!produtoEncontrado) {
+                throw new Error(`Produto com ID ${produto.id} não encontrado.`);
+            }
+            total += Number(produtoEncontrado.preco);
+            pedidoProdutos.push({
+                idProduto: produto.id,
+                preco: produtoEncontrado.preco,
+            });
+        }
+
+        const ultimoPedido = await this.pedidoRepository.obterUltimoPedido();
+        const numeroPedido = ultimoPedido?.numero ? Number(ultimoPedido.numero) + 1 : 1;
+        const statusPedido = StatusPedido.RECEBIDO;
+        const statusPagamentoPedido = StatusPagamento.PAGO;
+
+        const pedido = {
+            numero: numeroPedido,
+            status: statusPedido,
+            statusPagamento: statusPagamentoPedido,
+            PedidoProduto: {
+                create: pedidoProdutos,
+            },
+        };
+
+        const pedidoCriado = await this.pedidoRepository.criar(pedido) as unknown as { id: number; numero: number; };
+
+        return {
+            idPedido: pedidoCriado.id,
+            numeroPedido: pedidoCriado.numero,
+            total,
+        };
+    }
+
+    async buscarPedidos(): Promise<any[]> {
+        
+        let pedidos = await this.pedidoRepository.findAll({
+            where: { status: { $not: "Finalizado" } }, 
+        });
+    
+            pedidos.sort((a, b) => {
+            const statusOrder = { "Pronto": 1, "Em Preparação": 2, "Recebido": 3 };
+            return statusOrder[a.status] - statusOrder[b.status] || a.createdAt - b.createdAt;
+        });
+    
+        let pedidosDto = pedidos.map(pedido => ({
+            id: pedido.id,
+            numero: pedido.numero,
+            status: pedido.status,
+            statusPagamento: pedido.statusPagamento,
+            createdAt: pedido.createdAt,
+            tempoEspera: this.verificaTempoEspera(pedido.createdAt.getMinutes()),
+            PedidoProduto: pedido.PedidoProduto,
+        }));
+    
+        return pedidosDto;
     }
 }
