@@ -4,7 +4,7 @@ import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class ProdutoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async obter() {
         return await this.prisma.produto.findMany();

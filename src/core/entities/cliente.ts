@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class InsereCliente {
+export class Cliente {
+    @ApiProperty({ example: 1 })
+    id: number;
+
     @ApiProperty({ example: 'cliente' })
     nome: string;
 
@@ -9,4 +12,10 @@ export class InsereCliente {
 
     @ApiProperty({ example: 'teste@teste.com.br' })
     email: string;
+
+    constructor(nome: string, cpf: string, email: string) {
+        this.nome = nome,
+            this.cpf = cpf,
+            this.email = email
+    }
 }

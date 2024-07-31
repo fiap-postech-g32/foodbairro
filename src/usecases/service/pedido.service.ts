@@ -9,10 +9,28 @@ export class PedidoService {
     constructor(
         private pedidoRepository: PedidoRepository,
         private produtoRepository: ProdutoRepository,
-    ) {}
+    ) { }
 
     async obter() {
-        return await this.pedidoRepository.obter();
+        let pedidos = await this.pedidoRepository.obter();
+        pedidos = pedidos.filter(f => f.status != "FINALIZADO");
+
+        pedidos.sort((a, b) => {
+            const statusOrder = { "Pronto": 1, "Em Preparação": 2, "Recebido": 3 };
+            return (statusOrder[a.status] - statusOrder[b.status]) || ((a.createdAt.getTime() / 1000) - (b.createdAt.getTime() / 1000));
+        });
+
+        let pedidosDto = pedidos.map(pedido => ({
+            id: pedido.id,
+            numero: pedido.numero,
+            status: pedido.status,
+            statusPagamento: pedido.statusPagamento,
+            createdAt: pedido.createdAt,
+            tempoEspera: this.verificaTempoEspera(pedido.createdAt.getMinutes()),
+            PedidoProduto: pedido.PedidoProduto,
+        }));
+
+        return pedidosDto;
     }
 
     async obterEmPreparacao() {
@@ -69,8 +87,6 @@ export class PedidoService {
         const statusPedido = StatusPedido.RECEBIDO;
         let statusPagamentoPedido = StatusPagamento.PENDENTE;
 
-        statusPagamentoPedido = this.verificaPagamento();
-
         const pedido = {
             numero: numeroPedido,
             status: statusPedido,
@@ -83,17 +99,17 @@ export class PedidoService {
         return await this.pedidoRepository.criar(pedido);
     }
 
-    async alterar({id, status}) {
-        return await this.pedidoRepository.alterar({id, status});
+    async alterar({ id, status }) {
+        return await this.pedidoRepository.alterar({ id, status });
+    }
+
+    async alterarStatusPagamento({ id, statusPagamento }) {
+        return await this.pedidoRepository.alterarStatusPagamento({ id, statusPagamento });
     }
 
     async excluir(id: number) {
         id = Number(id);
         return await this.pedidoRepository.excluir(id);
-    }
-
-    verificaPagamento() {
-        return StatusPagamento.PAGO;
     }
 
     async verificaTempoEspera(dataPedido) {

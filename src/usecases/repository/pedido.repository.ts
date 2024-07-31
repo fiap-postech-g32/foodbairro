@@ -15,12 +15,16 @@ export class PedidoRepository implements BaseRepository {
     }
 
     async obterUltimoPedido() {
-        return await this.prisma.pedido.findFirst({
-            orderBy: {
-                numero: 'desc',
-            },
-            take: 1,
-        });
+        try {
+            return await this.prisma.pedido.findFirst({
+                orderBy: {
+                    numero: 'desc',
+                },
+                take: 1,
+            });
+        } catch (error) {
+            throw error.mensagem;
+        }
     }
 
     async obterPorStatus(status) {
@@ -46,15 +50,30 @@ export class PedidoRepository implements BaseRepository {
     }
 
     async criar(pedido): Promise<void> {
-        await this.prisma.pedido.create({
-            data: pedido,
-        });
+        try {
+            await this.prisma.pedido.create({
+                data: pedido,
+            });
+        } catch (error) {
+            throw error.message;
+        }
     }
 
     async alterar({ id, status }) {
         await this.prisma.pedido.update({
             data: {
                 status,
+            },
+            where: {
+                id,
+            },
+        });
+    }
+
+    async alterarStatusPagamento({ id, statusPagamento }) {
+        await this.prisma.pedido.update({
+            data: {
+                statusPagamento,
             },
             where: {
                 id,

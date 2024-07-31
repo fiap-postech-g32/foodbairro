@@ -7,20 +7,20 @@ import {
     Post,
     Put,
 } from '@nestjs/common/decorators';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ClienteService } from 'src/adapter/driven/service/cliente.service';
-import { Cliente } from 'src/core/domain/cliente';
-import { InsereCliente } from 'src/core/domain/insereCliente';
-import { Retorno } from 'src/core/domain/retorno';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Produto } from 'src/core/entities/produto';
+import { Retorno } from 'src/core/entities/retorno';
+import { Categoria } from 'src/core/enum/categoria';
+import { ProdutoService } from 'src/usecases/service/produto.service';
 
-@ApiTags('Cliente')
-@Controller('cliente')
-export class ClienteController {
-    constructor(private readonly service: ClienteService) { }
+@ApiTags('Produto')
+@Controller('produto')
+export class ProdutoController {
+    constructor(private readonly service: ProdutoService) { }
 
-    @Get()
+    @Get('')
     @ApiOperation({
-        description: 'Método utilizado para obter todos os clientes',
+        description: 'Método utilizado para obter todos os produtos',
     })
     async obter() {
         const result = new Retorno();
@@ -36,16 +36,17 @@ export class ClienteController {
         return result;
     }
 
-    @Get(':cpf')
+    @Get(':categoria')
     @ApiOperation({
         description:
-            'Método utilizado para obter um determinado cliente pelo CPF',
+            'Método utilizado para obter todos os produtos por uma determinada categoria',
     })
-    async obterPorCpf(@Param('cpf') cpf: string) {
+    @ApiParam({ name: 'categoria', enum: Categoria })
+    async obterPorCategoria(@Param('categoria') categoria: Categoria) {
         const result = new Retorno();
 
         try {
-            const produtos = await this.service.obterPorCpf(cpf);
+            const produtos = await this.service.obterPorCategoria(categoria);
             result.data = produtos;
         } catch (error) {
             result.sucesso = false;
@@ -55,16 +56,16 @@ export class ClienteController {
         return result;
     }
 
-    @Post()
+    @Post('')
     @ApiOperation({
-        description: 'Método utilizado para inserir um novo cliente',
+        description: 'Método utilizado para inserir um novo produto',
     })
-    async criar(@Body() cliente: InsereCliente) {
+    async criar(@Body() produto: Produto) {
         const result = new Retorno();
 
         try {
-            await this.service.criar(cliente);
-            result.mensagem = 'Cliente incluído com sucesso';
+            await this.service.criar(produto);
+            result.mensagem = 'Produto incluído com sucesso';
         } catch (error) {
             result.sucesso = false;
             result.mensagem = error;
@@ -75,14 +76,14 @@ export class ClienteController {
 
     @Put()
     @ApiOperation({
-        description: 'Método utilizado para atualizar um determinado cliente',
+        description: 'Método utilizado para atualizar um determinado produto',
     })
-    async alterar(@Body() cliente: Cliente) {
+    async alterar(@Body() produto: Produto) {
         const result = new Retorno();
 
         try {
-            await this.service.alterar(cliente);
-            result.mensagem = 'Cliente alterado com sucesso';
+            await this.service.alterar(produto);
+            result.mensagem = 'Produto alterado com sucesso';
         } catch (error) {
             result.sucesso = false;
             result.mensagem = error;
@@ -93,14 +94,14 @@ export class ClienteController {
 
     @Delete(':id')
     @ApiOperation({
-        description: 'Método utilizado para excluir um determinado cliente',
+        description: 'Método utilizado para excluir um determinado produto',
     })
     async excluir(@Param('id') id: number) {
         const result = new Retorno();
 
         try {
             await this.service.excluir(id);
-            result.mensagem = 'Cliente excluído com sucesso';
+            result.mensagem = 'Produto excluído com sucesso';
         } catch (error) {
             result.sucesso = false;
             result.mensagem = error;
