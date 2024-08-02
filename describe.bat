@@ -1,0 +1,1 @@
+kubectl describe pod %POD_NAME%
