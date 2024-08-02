@@ -8,16 +8,16 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PedidoService } from 'src/adapter/driven/service/pedido.service';
-import { Checkout } from 'src/core/domain/checkout';
-import { Produto } from 'src/core/domain/produto';
-import { Retorno } from 'src/core/domain/retorno';
+import { Checkout } from 'src/core/entities/checkout';
+import { Retorno } from 'src/core/entities/retorno';
+import { StatusPagamento } from 'src/core/enum/statusPagamento';
 import { StatusPedido } from 'src/core/enum/statusPedido';
+import { PedidoUseCase } from 'src/usecases/pedido.usecase';
 
 @ApiTags('Pedido')
 @Controller('pedido')
 export class PedidoController {
-    constructor(private readonly service: PedidoService) { }
+    constructor(private readonly service: PedidoUseCase) { }
 
     @Get('')
     @ApiOperation({
@@ -76,19 +76,19 @@ export class PedidoController {
     }
 
     @Post('/checkout')
-    @ApiBody({ type: [ Produto ] })
+    @ApiBody({ type: [Checkout] })
     @ApiOperation({
         description: 'Método utilizado para enviar o checkout do pedido',
     })
-    async criar(@Body() pedido: Checkout[]) {
+    async criar(@Body() produtos: Checkout[]) {
         const result = new Retorno();
 
         try {
-            await this.service.criar(pedido);
+            result.data = await this.service.criar(produtos);
             result.mensagem = 'Pedido incluído com sucesso';
         } catch (error) {
             result.sucesso = false;
-            result.mensagem = error;
+            result.mensagem = error.message;
         }
 
         return result;
@@ -99,11 +99,28 @@ export class PedidoController {
         description: 'Método utilizado para atualizar status do pedido',
     })
     @ApiParam({ name: 'status', enum: StatusPedido })
-    async alterar(@Param('id') id: string, @Param('status') status: string) {
+    async alterarStatusPedido(@Param('id') id: string, @Param('status') status: string) {
         const result = new Retorno();
         try {
             await this.service.alterar({ id: Number(id), status });
             result.mensagem = 'Pedido alterado com sucesso';
+        } catch (error) {
+            result.sucesso = false;
+            result.mensagem = error;
+        }
+        return result;
+    }
+
+    @Put(':id/statusPagamento/:statusPagamento')
+    @ApiOperation({
+        description: 'Método utilizado para atualizar status de pagamento do pedido',
+    })
+    @ApiParam({ name: 'statusPagamento', enum: StatusPagamento })
+    async alterarStatusPagamento(@Param('id') id: string, @Param('statusPagamento') statusPagamento: string) {
+        const result = new Retorno();
+        try {
+            await this.service.alterarStatusPagamento({ id: Number(id), statusPagamento });
+            result.mensagem = 'Status de pagamento do pedido alterado com sucesso';
         } catch (error) {
             result.sucesso = false;
             result.mensagem = error;

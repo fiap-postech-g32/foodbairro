@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { Categoria } from '../../../core/enum/categoria';
-import { ProdutoRepository } from '../repository/produto.repository';
+import { Produto } from 'src/core/entities/produto';
+import { Categoria } from 'src/core/enum/categoria';
+import { ProdutoRepository } from './repository/produto.repository';
 
 @Injectable()
-export class ProdutoService {
-    constructor(private repository: ProdutoRepository) {}
+export class ProdutoUseCase {
+    private minCarateresNomeProduto: number = 3;
+    private maxCarateresNomeProduto: number = 250;
+
+    constructor(private repository: ProdutoRepository) {
+    }
 
     async obter() {
         return await this.repository.obter();
@@ -14,11 +19,13 @@ export class ProdutoService {
         return await this.repository.obterPorCategoria(categoria);
     }
 
-    async criar(produto: any) {
+    async criar(produto: Produto) {
         try {
-            const teste = this.convertStrToEnum(produto.categoria);
-            if (teste == '')
+            if (this.convertStrToEnum(produto.categoria) == '')
                 throw new Error('Categoria informada não é permitida!');
+
+            if (produto.nome.length <= this.minCarateresNomeProduto || produto.nome.length > this.maxCarateresNomeProduto)
+                throw new Error('O tamanho do nome do produto deve conter entre 4 e 250 caracteres');
 
             return await this.repository.criar(produto);
         } catch (error) {

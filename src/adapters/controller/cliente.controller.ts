@@ -8,15 +8,14 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ClienteService } from 'src/adapter/driven/service/cliente.service';
-import { Cliente } from 'src/core/domain/cliente';
-import { InsereCliente } from 'src/core/domain/insereCliente';
-import { Retorno } from 'src/core/domain/retorno';
+import { Cliente } from 'src/core/entities/cliente';
+import { Retorno } from 'src/core/entities/retorno';
+import { ClienteUseCase } from 'src/usecases/cliente.usecase';
 
 @ApiTags('Cliente')
 @Controller('cliente')
 export class ClienteController {
-    constructor(private readonly service: ClienteService) { }
+    constructor(private readonly service: ClienteUseCase) { }
 
     @Get()
     @ApiOperation({
@@ -59,15 +58,15 @@ export class ClienteController {
     @ApiOperation({
         description: 'Método utilizado para inserir um novo cliente',
     })
-    async criar(@Body() cliente: InsereCliente) {
+    async criar(@Body() cliente: Cliente) {
         const result = new Retorno();
 
         try {
-            await this.service.criar(cliente);
+            result.data = await this.service.criar(new Cliente(cliente.nome, cliente.cpf, cliente.email));
             result.mensagem = 'Cliente incluído com sucesso';
         } catch (error) {
             result.sucesso = false;
-            result.mensagem = error;
+            result.mensagem = error.message;
         }
 
         return result;

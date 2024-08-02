@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { PrismaService } from '../database/prisma.service';
+import { Pedido } from '@prisma/client';
+import { PrismaDataBase } from '../database/prisma.database';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class PedidoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaDataBase) { }
 
     async obter() {
         return await this.prisma.pedido.findMany({
@@ -15,12 +16,16 @@ export class PedidoRepository implements BaseRepository {
     }
 
     async obterUltimoPedido() {
-        return await this.prisma.pedido.findFirst({
-            orderBy: {
-                numero: 'desc',
-            },
-            take: 1,
-        });
+        try {
+            return await this.prisma.pedido.findFirst({
+                orderBy: {
+                    numero: 'desc',
+                },
+                take: 1,
+            });
+        } catch (error) {
+            throw error.mensagem;
+        }
     }
 
     async obterPorStatus(status) {
@@ -45,16 +50,33 @@ export class PedidoRepository implements BaseRepository {
         });
     }
 
-    async criar(pedido): Promise<void> {
-        await this.prisma.pedido.create({
-            data: pedido,
-        });
-    }
+    async criar(pedido): Promise<Pedido> {
+        try {
+            return await this.prisma.pedido.create({
+                data: pedido,
+            });
+
+        }
+        catch (error) {
+            throw error.message;
+        }
+    };
 
     async alterar({ id, status }) {
         await this.prisma.pedido.update({
             data: {
                 status,
+            },
+            where: {
+                id,
+            },
+        });
+    }
+
+    async alterarStatusPagamento({ id, statusPagamento }) {
+        await this.prisma.pedido.update({
+            data: {
+                statusPagamento,
             },
             where: {
                 id,

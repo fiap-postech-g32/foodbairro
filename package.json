@@ -23,7 +23,9 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "docker:build": "docker build -t lanchonete .",
         "docker:run": "docker run -p 3000:3000 -d lanchonete",
-        "database": "npx prisma studio"
+        "database": "npx prisma studio",
+        "migrate": "npx prisma migrate deploy",
+        "seed": "npx prisma db seed"
     },
     "dependencies": {
         "@nestjs/common": "^10.0.0",
