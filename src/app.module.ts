@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaService } from './adapter/driven/database/prisma.service';
-import { ClienteRepository } from './adapter/driven/repository/cliente.repository';
-import { PedidoRepository } from './adapter/driven/repository/pedido.repository';
-import { ProdutoRepository } from './adapter/driven/repository/produto.repository';
-import { ClienteService } from './adapter/driven/service/cliente.service';
-import { PedidoService } from './adapter/driven/service/pedido.service';
-import { ProdutoService } from './adapter/driven/service/produto.service';
-import { ClienteController } from './adapter/driver/controller/cliente.controller';
-import { PedidoController } from './adapter/driver/controller/pedido.controller';
-import { ProdutoController } from './adapter/driver/controller/produto.controller';
+import { ClienteController } from './adapters/controller/cliente.controller';
+import { PedidoController } from './adapters/controller/pedido.controller';
+import { ProdutoController } from './adapters/controller/produto.controller';
 import { AppController } from './app.controller';
+import { ClienteUseCase } from './usecases/cliente.usecase';
+import { PrismaDataBase } from './usecases/database/prisma.database';
+import { PedidoUseCase } from './usecases/pedido.usecase';
+import { ProdutoUseCase } from './usecases/produto.usecase';
+import { ClienteRepository } from './usecases/repository/cliente.repository';
+import { PedidoRepository } from './usecases/repository/pedido.repository';
+import { ProdutoRepository } from './usecases/repository/produto.repository';
 
 @Module({
     imports: [ConfigModule.forRoot()],
@@ -21,13 +21,13 @@ import { AppController } from './app.controller';
         PedidoController,
     ],
     providers: [
-        PrismaService,
-        ClienteService,
+        PrismaDataBase,
+        ClienteUseCase,
         ClienteRepository,
-        PedidoService,
+        PedidoUseCase,
         PedidoRepository,
-        ProdutoService,
+        ProdutoUseCase,
         ProdutoRepository,
     ],
 })
-export class AppModule {}
+export class AppModule { }

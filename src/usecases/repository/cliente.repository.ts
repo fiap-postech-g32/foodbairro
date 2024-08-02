@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaDataBase } from '../database/prisma.database';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class ClienteRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaDataBase) { }
 
     async obter() {
         return await this.prisma.cliente.findMany();
@@ -14,6 +14,15 @@ export class ClienteRepository implements BaseRepository {
         return await this.prisma.cliente.findFirst({
             where: {
                 cpf,
+            },
+        });
+    }
+
+    async verificaClienteExistente({ cpf, email }) {
+        return await this.prisma.cliente.count({
+            where: {
+                cpf,
+                email
             },
         });
     }

@@ -8,16 +8,15 @@ import {
     Put,
 } from '@nestjs/common/decorators';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { ProdutoService } from 'src/adapter/driven/service/produto.service';
-import { InsereProduto } from 'src/core/domain/insereProduto';
-import { Produto } from 'src/core/domain/produto';
-import { Retorno } from 'src/core/domain/retorno';
+import { Produto } from 'src/core/entities/produto';
+import { Retorno } from 'src/core/entities/retorno';
 import { Categoria } from 'src/core/enum/categoria';
+import { ProdutoUseCase } from 'src/usecases/produto.usecase';
 
 @ApiTags('Produto')
 @Controller('produto')
 export class ProdutoController {
-    constructor(private readonly service: ProdutoService) {}
+    constructor(private readonly service: ProdutoUseCase) { }
 
     @Get('')
     @ApiOperation({
@@ -61,11 +60,11 @@ export class ProdutoController {
     @ApiOperation({
         description: 'Método utilizado para inserir um novo produto',
     })
-    async criar(@Body() produto: InsereProduto) {
+    async criar(@Body() produto: Produto) {
         const result = new Retorno();
 
         try {
-            await this.service.criar(produto);
+            await this.service.criar(new Produto(produto.id, produto.nome, produto.descricao, produto.categoria, produto.preco));
             result.mensagem = 'Produto incluído com sucesso';
         } catch (error) {
             result.sucesso = false;
