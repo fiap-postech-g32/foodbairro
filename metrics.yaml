@@ -9,26 +9,25 @@ spec:
     - name: metrics-port
       protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 8080
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: metrics-deployment
+  name: metrics-deployment
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: foodbairro
-    template:
-        metadata:
-            labels:
-                app: foodbairro
-        spec:
-            containers:
-                - name: metrics-container
-                  image: davijr/foodbairro:latest
-                  ports:
-                      - containerPort: 80
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foodbairro
+  template:
+    metadata:
+      labels:
+        app: foodbairro
+    spec:
+      containers:
+        - name: metrics-container
+          image: davijr/foodbairro:latest
+          ports:
+            - containerPort: 80
