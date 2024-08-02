@@ -1,19 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: foodbairro-app
+  name: foodbairro
+  labels:
+    app: foodbairro
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: foodbairro-app
+      app: foodbairro
+  replicas: 1
   template:
     metadata:
+      name: foodbairro
       labels:
-        app: foodbairro-app
+        app: foodbairro
     spec:
       containers:
-      - name: foodbairro-app
-        image: foodbairro-repo/foodbairro-app:latest
+      - name: foodbairro-container
+        image: davijr/foodbairro:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "1m"
