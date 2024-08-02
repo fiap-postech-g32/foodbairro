@@ -10,12 +10,12 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Cliente } from 'src/core/entities/cliente';
 import { Retorno } from 'src/core/entities/retorno';
-import { ClienteService } from 'src/usecases/service/cliente.service';
+import { ClienteUseCase } from 'src/usecases/cliente.usecase';
 
 @ApiTags('Cliente')
 @Controller('cliente')
 export class ClienteController {
-    constructor(private readonly service: ClienteService) { }
+    constructor(private readonly service: ClienteUseCase) { }
 
     @Get()
     @ApiOperation({
@@ -62,7 +62,7 @@ export class ClienteController {
         const result = new Retorno();
 
         try {
-            await this.service.criar(cliente);
+            result.data = await this.service.criar(new Cliente(cliente.nome, cliente.cpf, cliente.email));
             result.mensagem = 'Cliente incluído com sucesso';
         } catch (error) {
             result.sucesso = false;

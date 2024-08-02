@@ -1,5 +1,5 @@
 
-export abstract class BaseService {
+export abstract class BaseUseCase {
 
     abstract obter();
 

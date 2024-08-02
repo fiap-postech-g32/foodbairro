@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaDataBase } from '../database/prisma.database';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class ProdutoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaDataBase) { }
 
     async obter() {
         return await this.prisma.produto.findMany();

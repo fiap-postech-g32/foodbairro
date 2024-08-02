@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { PrismaService } from '../database/prisma.service';
+import { Pedido } from '@prisma/client';
+import { PrismaDataBase } from '../database/prisma.database';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class PedidoRepository implements BaseRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaDataBase) { }
 
     async obter() {
         return await this.prisma.pedido.findMany({
@@ -49,15 +50,17 @@ export class PedidoRepository implements BaseRepository {
         });
     }
 
-    async criar(pedido): Promise<void> {
+    async criar(pedido): Promise<Pedido> {
         try {
-            await this.prisma.pedido.create({
+            return await this.prisma.pedido.create({
                 data: pedido,
             });
-        } catch (error) {
+
+        }
+        catch (error) {
             throw error.message;
         }
-    }
+    };
 
     async alterar({ id, status }) {
         await this.prisma.pedido.update({

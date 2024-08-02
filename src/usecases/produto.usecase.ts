@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { Produto } from 'src/core/entities/produto';
 import { Categoria } from 'src/core/enum/categoria';
-import { ProdutoRepository } from '../repository/produto.repository';
+import { ProdutoRepository } from './repository/produto.repository';
 
 @Injectable()
-export class ProdutoService {
+export class ProdutoUseCase {
     private minCarateresNomeProduto: number = 3;
     private maxCarateresNomeProduto: number = 250;
 

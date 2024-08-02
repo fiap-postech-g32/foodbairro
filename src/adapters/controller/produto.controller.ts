@@ -11,12 +11,12 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Produto } from 'src/core/entities/produto';
 import { Retorno } from 'src/core/entities/retorno';
 import { Categoria } from 'src/core/enum/categoria';
-import { ProdutoService } from 'src/usecases/service/produto.service';
+import { ProdutoUseCase } from 'src/usecases/produto.usecase';
 
 @ApiTags('Produto')
 @Controller('produto')
 export class ProdutoController {
-    constructor(private readonly service: ProdutoService) { }
+    constructor(private readonly service: ProdutoUseCase) { }
 
     @Get('')
     @ApiOperation({
@@ -64,7 +64,7 @@ export class ProdutoController {
         const result = new Retorno();
 
         try {
-            await this.service.criar(produto);
+            await this.service.criar(new Produto(produto.id, produto.nome, produto.descricao, produto.categoria, produto.preco));
             result.mensagem = 'Produto incluído com sucesso';
         } catch (error) {
             result.sucesso = false;

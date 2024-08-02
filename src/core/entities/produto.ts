@@ -18,8 +18,9 @@ export class Produto {
     @ApiProperty({ example: '25.99', required: true })
     preco: Decimal;
 
-    constructor(nome: string, descricao: string, categoria: Categoria, preco: Decimal) {
-        this.nome = nome,
+    constructor(id: number, nome: string, descricao: string, categoria: Categoria, preco: Decimal) {
+        this.id = id,
+            this.nome = nome,
             this.descricao = descricao,
             this.categoria = categoria,
             this.preco = preco

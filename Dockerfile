@@ -6,8 +6,8 @@ COPY . .
 
 RUN npm install --quiet --no-optional --no-fund --loglevel=error
 RUN npm run build
-RUN npx prisma migrate deploy
-RUN npx prisma db seed
+RUN npm run migrate
+RUN npm run seed
 
 EXPOSE ${PORT}
 
